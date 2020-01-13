@@ -35,7 +35,7 @@ csr_build <- function(raw_data, return_all_data = TRUE) {
     csr_plan <- drake_plan(
 
       # read in datasets into individual targets
-      dat = target(read_dataset(dsn, raw_data),
+      dat = target(parse_dataset(dsn, raw_data),
                    # each data object is triggered by any change in the dataset directory;
                    # requires https://github.com/ropensci/drake/pull/795 (v7.1)
                    trigger = trigger(condition = file_in(dsf)),

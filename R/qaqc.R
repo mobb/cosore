@@ -12,7 +12,7 @@
 #' @param temp_limits Two-value numeric vector giving temperature limits
 #' @return A list with the `dsd` and `diag` tibbles.
 #' @importFrom tibble is_tibble
-#' @note This is normally called from \code{\link{read_raw_dataset}}.
+#' @note This is normally called from \code{\link{parse_raw_dataset}}.
 #' @export
 qaqc_data <- function(dsd, diag,
                       remove_na = TRUE,

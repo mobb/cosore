@@ -21,3 +21,10 @@ This is typically used to write standardized data
 to \code{inst/extdata/datasets}. These data can be removed
 by \code{\link{csr_remove_stan_data}}.
 }
+\examples{
+\dontrun{
+dat <- data.frame(x = 1:3)
+columns <- data.frame(Database = "y", Dataset = "x", Computation = "x * 2")
+map_columns(dat, columns)  # produces a data.frame(y = c(2, 4, 6))
+}
+}

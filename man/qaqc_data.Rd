@@ -32,5 +32,5 @@ A list with the `dsd` and `diag` tibbles.
 QA/QC a dataset.
 }
 \note{
-This is normally called from \code{\link{read_raw_dataset}}.
+This is normally called from \code{\link{parse_raw_dataset}}.
 }

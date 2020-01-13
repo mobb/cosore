@@ -5,7 +5,7 @@ context("release")
 test_that("make_cosore_release", {
 
   # Read test dataset, duplicate (for an embargo version) and make into a database object
-  x <- read_dataset("TEST_licordata", raw_data = "test_raw_data/")
+  x <- parse_dataset("TEST_licordata", raw_data = "test_raw_data/")
   x_embargo <- x
   x_embargo$description$CSR_DATASET <- paste0(x$description$CSR_DATASET, "_embargo")
   x_embargo$description$CSR_EMBARGO <- TRUE  # just needs to exist

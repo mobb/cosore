@@ -111,7 +111,7 @@ read_file <- function(dataset_name, file_name, file_data = NULL, comment_char = 
 #' Infrequently, the \code{description} object may include:
 #' \item{CSR_NOTES}{Notes, character}
 #' \item{CSR_EMBARGO}{Embargo information, character}
-read_description_file <- function(dataset_name, file_data = NULL) {
+parse_description_file <- function(dataset_name, file_data = NULL) {
   f <- read_file(dataset_name, "DESCRIPTION.txt", file_data = file_data)
 
   tibble(CSR_DATASET = dataset_name,
@@ -150,7 +150,7 @@ read_description_file <- function(dataset_name, file_data = NULL) {
 #' \item{CSR_EMAIL}{Email address, character}
 #' \item{CSR_ORCID}{ORCID identifier, character}
 #' \item{CSR_ROLE}{CRediT role, character}
-read_contributors_file <- function(dataset_name, file_data = NULL) {
+parse_contributors_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "CONTRIBUTORS.txt", file_data)
   cfd <- read_csv_data(file_data, required = c("CSR_FIRST_NAME", "CSR_FAMILY_NAME"))
 
@@ -210,7 +210,7 @@ read_csv_data <- function(file_data, required = NULL) {
 #' \item{CSR_SPECIES}{Species, character}
 #' \item{CSR_DEPTH}{Depth of collar, cm}
 #' \item{CSR_AREA}{Ground area of chamber, cm2}
-read_ports_file <- function(dataset_name, file_data = NULL) {
+parse_ports_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "PORTS.txt", file_data)
   pfd <- read_csv_data(file_data, required = c("CSR_PORT", "CSR_MSMT_VAR", "CSR_TREATMENT"))
 
@@ -234,7 +234,7 @@ read_ports_file <- function(dataset_name, file_data = NULL) {
 #' \item{Computation}{Optional computation R-parseable to perform, character}
 #' \item{Port}{Optional port number, integer}
 #' \item{Notes}{Optional notes, character}
-read_columns_file <- function(dataset_name, file_data = NULL) {
+parse_columns_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "COLUMNS.txt", file_data)
   read_csv_data(file_data, required = c("Database", "Dataset"))
 }
@@ -247,7 +247,7 @@ read_columns_file <- function(dataset_name, file_data = NULL) {
 #' @importFrom utils read.csv
 #' @note This is simply a comma-separated table.
 #' @return A \code{data.frame} containing any data in the file.
-read_ancillary_file <- function(dataset_name, file_data = NULL) {
+parse_ancillary_file <- function(dataset_name, file_data = NULL) {
   file_data <- read_file(dataset_name, "ANCILLARY.txt", file_data)
   read_csv_data(file_data)
 }
@@ -313,8 +313,8 @@ map_columns <- function(dat, columns) {
 #' @return A list with (at least) elements:
 #' \item{data}{Continuous soil respiration data, parsed into a \code{data.frame}}
 #' \item{diagnostics}{Diagnostics on the data parsing and QC process}
-#' @note This is normally called only from \code{\link{read_dataset}}.
-read_raw_dataset <- function(dataset_name, raw_data, dataset) {
+#' @note This is normally called only from \code{\link{parse_dataset}}.
+parse_raw_dataset <- function(dataset_name, raw_data, dataset) {
   df <- file.path(raw_data, dataset_name)
 
   # Processing statistics table
@@ -443,14 +443,14 @@ read_raw_dataset <- function(dataset_name, raw_data, dataset) {
 #' \item{ancillary}{Ancillary site information}
 #' @export
 #' @examples
-#' suppressWarnings(read_dataset("TEST_licordata"))
-read_dataset <- function(dataset_name, raw_data, force_raw = FALSE) {
+#' suppressWarnings(parse_dataset("TEST_licordata"))
+parse_dataset <- function(dataset_name, raw_data, force_raw = FALSE) {
 
-  dataset <- list(description = read_description_file(dataset_name),
-                  contributors = read_contributors_file(dataset_name),
-                  ports = read_ports_file(dataset_name),
-                  columns = read_columns_file(dataset_name),
-                  ancillary = read_ancillary_file(dataset_name))
+  dataset <- list(description = parse_description_file(dataset_name),
+                  contributors = parse_contributors_file(dataset_name),
+                  ports = parse_ports_file(dataset_name),
+                  columns = parse_columns_file(dataset_name),
+                  ancillary = parse_ancillary_file(dataset_name))
 
   # Parse the actual data. There are three possibilities:
 
@@ -474,7 +474,7 @@ read_dataset <- function(dataset_name, raw_data, force_raw = FALSE) {
       return(dataset)
     }
     message(dataset_name, "\tReading and parsing raw data")
-    x <- read_raw_dataset(dataset_name, raw_data, dataset)
+    x <- parse_raw_dataset(dataset_name, raw_data, dataset)
     dataset$diagnostics <- x$diag
     dataset$data <- x$dsd
 
