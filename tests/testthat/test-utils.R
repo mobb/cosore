@@ -86,10 +86,10 @@ test_that("csr_standardize_data", {
   # Subdirectory was created
   expect_true(dir.exists(td_dataset))
   # Files exist
-  expect_true(file.exists(file.path(td_dataset, "diag_ds1.RDS")))
-  expect_true(file.exists(file.path(td_dataset, "data_ds1.RDS")))
-  written_data <- readRDS(file.path(td_dataset, "data_ds1.RDS"))
-  expect_identical(all_data$ds1$data, written_data)
+  for(tab in names(ds1)) {
+    f <- file.path(td_dataset, paste0(tab, "_ds1.RDS"))
+    expect_true(file.exists(f), info = tab)
+  }
 
   # Removing standardized files works
   csr_remove_stan_data(td, datasets = "ds1")
@@ -102,7 +102,7 @@ test_that("csr_standardize_data", {
   csr_standardize_data(all_data, td, create_dirs = TRUE)
   td_dataset <- file.path(td, "ds2", "data")
   expect_true(dir.exists(td_dataset))
-  expect_identical(length(list.files(td_dataset)), 0L)
+  expect_identical(length(list.files(td_dataset)), length(ds2))
 
   csr_remove_stan_data(td, datasets = "ds2")
   expect_identical(list.files(td_dataset), character(0))

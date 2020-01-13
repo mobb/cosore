@@ -155,13 +155,19 @@ rbind_list <- function(x) {
 #' @param create_dirs Create subdirectories as needed? Logical
 #' @return Nothing.
 #' @export
+#' @examples
+#' \dontrun{
+#' dat <- data.frame(x = 1:3)
+#' columns <- data.frame(Database = "y", Dataset = "x", Computation = "x * 2")
+#' map_columns(dat, columns)  # produces a data.frame(y = c(2, 4, 6))
+#' }
 csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
 
   stopifnot(is.list(all_data))
   stopifnot(is.character(path))
   stopifnot(is.logical(create_dirs))
 
-  message("Writing data and diagnostic tables...")
+  message("Writing all tables...")
   p <- file.path(path, "datasets")
   lapply(all_data, function(x) {
     dataset_name <- x$description$CSR_DATASET
@@ -176,16 +182,12 @@ csr_standardize_data <- function(all_data, path, create_dirs = FALSE) {
       }
     }
 
-    datafiles <- character(0)
-    if(is.data.frame(x$data)) {
-      # Write respiration data
-      # csv (big, version control friendly) or RDS (small, fast, preserves types)?
-      # Going with the latter for now
-      outfile <- file.path(outpath, paste0("data_", dataset_name, ".RDS"))
-      saveRDS(x$data, file = outfile)
-      # Write diagnostics data
-      diagfile <- file.path(outpath, paste0("diag_", dataset_name, ".RDS"))
-      saveRDS(x$diagnostics, file = diagfile)
+    # csv (big, version control friendly) or RDS (small, fast, preserves types)?
+    # Going with the latter for now
+    for(tab in names(x)) {
+      message("- ", tab)
+      outfile <- file.path(outpath, paste0(tab, "_", dataset_name, ".RDS"))
+      saveRDS(x[[tab]], file = outfile)
     }
   })
   invisible(NULL)
