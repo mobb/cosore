@@ -14,6 +14,8 @@ test_that("rbind_list", {
   expect_identical(nrow(z), nrow(x) + nrow(y))
   expect_identical(names(z), union(names(x), names(y)))
   expect_equivalent(rbind_list(list(x, x)), rbind(x, x))
+
+  expect_identical(rbind_list(list()), NULL)
 })
 
 test_that("split_licor_file", {
@@ -124,4 +126,9 @@ test_that("convert_and_qc_timestamp", {
   out <- convert_and_qc_timestamp(ts, "not-a-valid-format-string", "UTC")
   expect_true(all(is.na(out$new_ts)))
   expect_true(all(out$na_ts))
+})
+
+test_that("data_dir", {
+  ds <- list_datasets()[1]
+  expect_true(dir.exists(data_dir(ds)))
 })

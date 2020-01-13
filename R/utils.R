@@ -127,6 +127,8 @@ insert_line <- function(file, pattern, newlines, after = TRUE, path = "./inst/ex
 rbind_list <- function(x) {
   stopifnot(is.list(x))
 
+  if(length(x) == 0) return(NULL)
+
   all_names <- unique(unlist(lapply(x, function(x) names(x))))
 
   tibble::as_tibble(
@@ -241,3 +243,13 @@ convert_and_qc_timestamp <- function(ts, timestamp_format, time_zone) {
   list(new_ts = new_ts, na_ts = na_ts, bad_examples = bad_examples)
 }
 
+
+#' Find the directory holding standardized data for a dataset
+#'
+#' @param dataset Name of dataset, character
+#'
+#' @return Path to the standardized data directory of a dataset
+#' @keywords internal
+data_dir <- function(dataset) {
+  file.path(resolve_dataset(dataset), "data")
+}
