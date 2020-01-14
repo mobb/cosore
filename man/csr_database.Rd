@@ -4,10 +4,7 @@
 \alias{csr_database}
 \title{Return an overview of available datasets}
 \usage{
-csr_database(all)
-}
-\arguments{
-\item{all}{All data, a list of lists}
+csr_database()
 }
 \value{
 A `data.frame` or `tibble` with data about the constitutent datasets of COSORE.

@@ -4,11 +4,9 @@
 \alias{csr_dataset}
 \title{Return an individual dataset}
 \usage{
-csr_dataset(all, dataset)
+csr_dataset(dataset)
 }
 \arguments{
-\item{all}{All data, a list of lists}
-
 \item{dataset}{Name of dataset, character}
 }
 \value{

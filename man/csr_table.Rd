@@ -4,12 +4,12 @@
 \alias{csr_table}
 \title{Extract one table (\code{description}, \code{data}, etc.) of all datasets}
 \usage{
-csr_table(all, table)
+csr_table(table, datasets = list_datasets())
 }
 \arguments{
-\item{all}{All data, a list of lists}
-
 \item{table}{Name of table to extract, character}
+
+\item{datasets}{Optional character vector of dataset names}
 }
 \value{
 A \code{\link{data.frame}}.

@@ -2,26 +2,19 @@
 
 context("user")
 
-test_that("user utilities work", {
+test_that("csr_table", {
 
-  all_data <- list(list(data = cars, dataset_name = "a"),
-                   list(data = cars, dataset_name = "b"),
-                   list(data = cars, dataset_name = "c"))
+  expect_error(csr_table(table = 1))
+  expect_error(csr_table(table = c("1", "2")))
+  expect_error(csr_table(table = "test", datasets = 1))
 
-  x <- csr_table(all_data, "data")
-  expect_is(x, "data.frame")
-  expect_identical(nrow(x), nrow(cars) * length(all_data))
 })
 
 
 test_that("csr_dataset", {
 
-  ds1 <- list(data = cars, dataset_name = "DS1")
-  all_data <- list(DS1 = ds1,
-                   DS2 = list(data = cars, dataset_name = "DS2"),
-                   DS3 = list(data = cars, dataset_name = "DS3"))
+  expect_error(csr_table(dataset = 1))
+  expect_error(csr_table(dataset = c("1", "2")))
 
-  expect_error(csr_dataset(all_data, "DS4"))
-  expect_identical(csr_dataset(all_data, "DS1"), ds1)
 })
 
